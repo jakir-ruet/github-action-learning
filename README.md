@@ -4,37 +4,46 @@
 
 ## Visit Us [Lapis Soft](http://www.lapissoft.com)
 
-### AWS Certified DevOps Engineer Professional
+### GitHub Actions for DevOps Engineer Professional
 
-This is designed for individuals who have experience working in a DevOps role and using AWS services. This certification validates your knowledge and skills in various areas related to implementing and managing continuous delivery systems and methodologies on the AWS platform. Key topics covered in the AWS Certified DevOps Engineer – Professional exam include:
+GitHub Actions is a platform provided by GitHub that allows you to automate workflows directly within your GitHub repository. It enables you to define custom CI/CD (Continuous Integration/Continuous Deployment) workflows using YAML syntax. With GitHub Actions, you can automate tasks such as building, testing, and deploying your code. Here are some key concepts related to GitHub Actions:
 
-- ***SDLC Automation:*** Implementing and managing continuous delivery systems and methodologies.
-- ***Configuration Management and Infrastructure as Code (IaC):*** Implementing and managing the deployment pipeline, including infrastructure as code (IaC).
-- ***Monitoring and Logging:*** Implementing monitoring and logging systems on AWS.
-- ***Policies and Standards Automation:*** Implementing systems that are highly available, scalable, and self-healing on the AWS platform.
-- ***Incident and Event Response:*** Designing, managing, and maintaining tools to automate operational processes.
-To prepare for the exam, it's recommended to have hands-on experience with various AWS services and understand how to design, manage, and maintain tools for automating operational processes. Additionally, reviewing the official exam guide provided by AWS, along with relevant AWS documentation and whitepapers, can help you prepare effectively.
+- ***Workflow:*** A workflow is a set of automated processes that are triggered based on specific events in your GitHub repository. Common events include pushes to the repository, pull requests, or the creation of new issues.
+- ***Job:*** A job is a set of steps that are executed on the same runner. You can define multiple jobs within a workflow, and they can run in parallel or sequentially.
+- ***Step:*** A step is a single task within a job. It can be a shell command, a script, or an action. Actions are reusable units of code that encapsulate a task, and they can be created by the GitHub community or by yourself.
+- ***Runner:*** A runner is a machine where your jobs are executed. GitHub provides hosted runners with various operating systems (Linux, macOS, Windows), or you can set up your own self-hosted runner.
+- ***Workflow File (YAML):*** Workflows are defined using YAML files stored in the .github/workflows directory of your repository. These files specify the jobs, steps, and actions that should be executed when certain events occur.
+Here's a simple example of a GitHub Actions workflow that runs on each push to the main branch:
+```bash
+  name: CI
 
-1. AWS CLI
-   - Control multiple AWS services from this command line.
-   - How to [Install?](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-   - Let's me check `aws --version`
-   - If its okay then we will see `aws-cli/2.15.4 Python/3.11.6 Darwin/23.2.0 exe/x86_64 prompt/off`
-   - Configuration using security credential
-     - Go to AWS Management Console > Services > IAM
-     - Select the IAM User Name: Your User Name [_**NB**_: You must use IAM's Information only not Root User]
-     - Click on `Security credentials`
-     - Click on `Create access key`
-     - Copy Access ID & Secret access key
-     - Go to your Terminal and implement as below format
-     - `aws configure`
-     - AWS Access Key ID [None]: Put your ID here and press Enter.
-     - AWS Secret Access Key [None]: Put your secret key here and press Enter
-     - Default region name [None]: us-east-1
-     - Default output format [None]: json
-   - Let's me check whether the configuration is done.
-     - `aws ec2 describe-vpcs`
-     - If it is done then we will see the details of the default vpc.
+  on:
+    push:
+      branches:
+        - master
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+```
+In this example, the workflow is triggered on each push to the main branch. It has one job (build) that runs on an Ubuntu-based runner. The steps include checking out the code, setting up Node.js, installing dependencies, and running tests.
+
+You can customize GitHub Actions workflows to suit your specific needs, integrating them with various services and tools to automate your software development processes.
 
 ## Courtesy of Jakir
 
