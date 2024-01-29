@@ -14,7 +14,7 @@ GitHub Actions is a platform provided by GitHub that allows you to automate work
 - ***Runner:*** A runner is a machine where your jobs are executed. GitHub provides hosted runners with various operating systems (Linux, macOS, Windows), or you can set up your own self-hosted runner.
 - ***Workflow File (YAML):*** Workflows are defined using YAML files stored in the .github/workflows directory of your repository. These files specify the jobs, steps, and actions that should be executed when certain events occur.
 Here's a simple example of a GitHub Actions workflow that runs on each push to the main branch:
-```bash
+```YAML
   name: CI
 
   on:
