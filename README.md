@@ -1,24 +1,18 @@
 ## More About Me – [Take a Look!](http://www.mjakaria.me) 
 
-### GitHub Actions?
-GitHub Actions is a Continuous Integration/Continuous Deployment `CI/CD` platform built into GitHub. It lets you automate workflows like `testing code`, `building applications`, `deploying to servers`, `sending notifications`, and more — all triggered by GitHub events like `push`, `pull` `request`, `release`, etc.
+### [GitHub Actions](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions)
+GitHub Actions is a automation (CI/CD) service by GitHub. It's automated all kind of repository related process & actions that will run one or more jobs. Workflows are defined in the `.github/workflows` directory in a repository. It's has two main areas
+- Continuous Integration (CI/CD) - Code `Test`, `Build`, `Deployment`, new app release. 
+- Source Code Management (SCM) - Automate `code reviews`, `issues management` etc.
 
-#### Core Concepts
+ It lets you automate workflows like `testing code`, `building applications`, `deploying to servers`, `sending notifications`, and more — all triggered by GitHub events like `push`, `pull` `request`, `release`, etc.
 
-| Term         | Description                                                                                                                      |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| **Workflows** | A YAML file that defines the automation process, triggered by GitHub events like push, PR, release, etc.                         |
-| **Events**    | A specific activity on GitHub that triggers a workflow (e.g., `push`, `pull_request`, `release`, `schedule`).                    |
-| **Jobs**      | A set of steps that execute on the same runner. Jobs run in parallel by default.                                                 |
-| **Steps**     | A single task within a job. Steps can run shell commands or use actions.                                                         |
-| **Actions**   | A reusable piece of code or script that can be shared across workflows. GitHub and the community provide many pre-built actions. |
-| **Runners**   | A server that runs your workflow jobs. GitHub provides hosted runners, or you can host your own.                                 |
-
-##### Workflows
-A workflow is a set of automated processes that are triggered based on specific events in your GitHub repository. Common events include pushes to the repository, pull requests, or the creation of new issues. A workflow is the top-level configuration file that defines `what automation you want to run` and when to run it. Some important bullet points;
-- It’s written in YAML and stored in `.github/workflows/`.
-- Each workflow can have multiple jobs, and each job has multiple steps.
-- You can have as many workflow files as you want in a repository.
+#### The `three` main building blocks in GitHub Actions are:
+1. **[Workflows](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions)**
+   A workflow is a set of automated processes that are triggered based on specific events in your GitHub repository. Common events include pushes to the repository, pull requests, or the creation of new issues.
+   - A workflow is a YAML file that defines what should happen (CI/CD logic).
+   - It lives in `.github/workflows/` in your repo.
+   - You can have multiple workflows for different purposes (`test`, `deploy`, `release`).
 ```yaml
 name: Deploy Website
 on: push
@@ -28,8 +22,34 @@ jobs:
     steps:
       - run: echo "Deploying site..."
 ```
+
+2. [Jobs](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions)
+   A job is a set of steps in a workflow that is executed on the same runner. Each step is either a shell script that will be executed, or an action that will be run.
+   - A job is a set of steps that run in the same runner (environment).
+   - Jobs can run in parallel or sequentially.
+   - Each job runs on its own VM or container.
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This is a job"
+```
+
+3. [Steps](https://docs.github.com/en/actions/about-github-actions/understanding-github-actions)
+   - Steps are individual tasks inside a job (`checkout code`, `run tests`).
+   - They can run commands or use actions (reusable pieces of code).
+```yaml
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v3
+  - name: Install Dependencies
+    run: npm install
+```
+
+#### Others building blocks in GitHub Actions are:
 ##### Events
-An event is what triggers a workflow to run. Some important bullet points;
+An event is a specific activity in a repository that triggers a workflow run. For example, an activity can originate from GitHub when someone creates a pull request, opens an issue, or pushes a commit to a repository.
 - `push` – When someone pushes to the repo.
 - `pull_request` – When a PR is opened or updated.
 - `schedule` – Runs on a cron schedule.
@@ -39,27 +59,7 @@ on:
   push:
     branches: [main]
 ```
-##### Jobs
-A job is a set of steps that are executed on the same runner. You can define multiple jobs within a workflow, and they can run in parallel or sequentially.
-- A job is a group of steps that run together on the same runner (machine).
-- Jobs run in parallel by default (unless you set dependencies between them).
-- Each job runs in a clean environment unless you persist data using artifacts or caching.
-```yaml
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "This is a job"
-```
-##### Steps
-A step is a single task within a job. It can be a shell command, a script, or an action. Actions are reusable units of code that encapsulate a task, and they can be created by the GitHub community or by yourself.
-```yaml
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v3
-  - name: Install Dependencies
-    run: npm install
-```
+
 ##### Actions
 An action is a custom application for the GitHub Actions platform that performs a complex but frequently repeated task. Use an action to help reduce the amount of repetitive code that you write in your workflow files.
 ```yaml
@@ -69,7 +69,7 @@ An action is a custom application for the GitHub Actions platform that performs 
     node-version: '18'
 ```
 ##### Runners
-A runner is a machine where your jobs are executed. GitHub provides hosted runners with various operating systems (Linux, macOS, Windows), or you can set up your own self-hosted runner.
+A runner is a server that runs your workflows when they're triggered. Each runner can run a single job at a time. GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your workflows.
 ```yaml
 runs-on: ubuntu-latest
 ```
